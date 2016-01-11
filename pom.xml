@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2013-2016, The SeedStack authors <http://seedstack.org>
+
+    This Source Code Form is subject to the terms of the Mozilla Public
+    License, v. 2.0. If a copy of the MPL was not distributed with this
+    file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.seedstack.poms</groupId>
+        <artifactId>parent-internal</artifactId>
+        <version>2.2.1-SNAPSHOT</version>
+    </parent>
+
+    <groupId>org.seedstack.sonar</groupId>
+    <artifactId>sonar-seedstack-plugin</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>sonar-plugin</packaging>
+
+    <url>http://seedstack.org/docs/sonar</url>
+    <organization>
+        <name>SeedStack</name>
+        <url>http://seedstack.org</url>
+    </organization>
+    <developers>
+        <developer>
+            <name>Adrien LAUER</name>
+            <email>adrien.lauer@gmail.com</email>
+        </developer>
+    </developers>
+
+    <properties>
+        <java.plugin.version>3.8</java.plugin.version>
+        <seed.version>2.1.0</seed.version>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <configuration>
+                        <includedLicenses>
+                            <includedLicense>Apache 2</includedLicense>
+                            <includedLicense>BSD</includedLicense>
+                            <includedLicense>Jaxen</includedLicense>
+                            <includedLicense>Indiana</includedLicense>
+                            <includedLicense>LGPL 2.1</includedLicense>
+                            <includedLicense>LGPL 3.0</includedLicense>
+                            <includedLicense>MIT</includedLicense>
+
+                            <!-- Some licenses are ignored because they are alternatives to acceptable licenses and the plugin doesn't handle alternate licenses -->
+                            <includedLicense>IGNORED_LICENSE</includedLicense>
+                        </includedLicenses>
+                        <licenseMerges>
+                            <licenseMerge>Apache 2|The Apache Software License, Version 2.0</licenseMerge>
+                            <licenseMerge>Apache 2|ASF 2.0</licenseMerge>
+                            <licenseMerge>Apache 2|Apache Software Licenses</licenseMerge>
+                            <licenseMerge>Apache 2|Apache License, Version 2.0</licenseMerge>
+                            <licenseMerge>BSD|BSD style</licenseMerge>
+                            <licenseMerge>BSD|The BSD License</licenseMerge>
+                            <licenseMerge>Jaxen|http://jaxen.codehaus.org/license.html</licenseMerge>
+                            <licenseMerge>LGPL 2.1|GNU General Public Library</licenseMerge>
+                            <licenseMerge>LGPL 2.1|GNU Lesser General Public License (LGPL), Version 2.1</licenseMerge>
+                            <licenseMerge>LGPL 2.1|GNU LESSER GENERAL PUBLIC LICENSE</licenseMerge>
+                            <licenseMerge>LGPL 3.0|GNU LGPL 3</licenseMerge>
+                            <licenseMerge>MIT|The MIT License</licenseMerge>
+                            <licenseMerge>MIT|MIT License</licenseMerge>
+
+                            <licenseMerge>IGNORED_LICENSE|COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0</licenseMerge>
+                        </licenseMerges>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
+                <artifactId>sonar-packaging-maven-plugin</artifactId>
+                <version>1.15</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <pluginClass>org.seedstack.sonar.SeedStackPlugin</pluginClass>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.seedstack.seed</groupId>
+                                    <artifactId>seed-core</artifactId>
+                                    <version>${seed.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/test-jars</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.sonarsource.sonarqube</groupId>
+            <artifactId>sonar-plugin-api</artifactId>
+            <version>5.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.sonarsource.java</groupId>
+            <artifactId>sonar-java-plugin</artifactId>
+            <type>sonar-plugin</type>
+            <version>${java.plugin.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.sonarsource.java</groupId>
+            <artifactId>java-squid</artifactId>
+            <version>${java.plugin.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.sonarsource.java</groupId>
+            <artifactId>java-checks-testkit</artifactId>
+            <version>${java.plugin.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.sonar.sslr</groupId>
+            <artifactId>sslr-testing-harness</artifactId>
+            <version>1.19.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
