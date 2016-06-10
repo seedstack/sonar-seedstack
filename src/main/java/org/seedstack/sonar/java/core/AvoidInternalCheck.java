@@ -23,12 +23,12 @@ import java.util.regex.Pattern;
         name = "SeedStack internal classes should not be used",
         description = "This rule detects usage of any classes located in org.seedstack.**.internal.** packages",
         tags = "seedstack",
-        priority = Priority.MAJOR
+        priority = Priority.CRITICAL
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.MAINTAINABILITY_COMPLIANCE)
 @SqaleConstantRemediation("30min")
-public class AvoidInternalRule extends BaseTreeVisitor implements JavaFileScanner {
-    public static Pattern INTERNAL_TYPE_PATTERN = Pattern.compile("^org\\.seedstack.*\\.internal\\..*");
+public class AvoidInternalCheck extends BaseTreeVisitor implements JavaFileScanner {
+    private static Pattern INTERNAL_TYPE_PATTERN = Pattern.compile("^org\\.seedstack.*\\.internal\\..*");
 
     private JavaFileScannerContext context;
 
@@ -41,9 +41,9 @@ public class AvoidInternalRule extends BaseTreeVisitor implements JavaFileScanne
     @Override
     public void visitIdentifier(IdentifierTree tree) {
         if (tree.symbol().isTypeSymbol()) {
-            String fullyQualifiedName = tree.symbol().type().fullyQualifiedName();
+            String fullyQualifiedName = tree.symbolType().fullyQualifiedName();
             if (INTERNAL_TYPE_PATTERN.matcher(fullyQualifiedName).matches()) {
-                context.addIssue(tree, this, String.format("Remove usage of %s type", fullyQualifiedName));
+                context.reportIssue(this, tree, String.format("Remove usage of %s", fullyQualifiedName));
             }
         }
 

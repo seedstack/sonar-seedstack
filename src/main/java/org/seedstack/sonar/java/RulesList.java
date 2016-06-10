@@ -7,10 +7,11 @@
  */
 package org.seedstack.sonar.java;
 
-import com.google.common.collect.ImmutableList;
-import org.seedstack.sonar.java.core.AvoidInternalRule;
+import org.seedstack.sonar.java.core.AvoidGuiceCheck;
+import org.seedstack.sonar.java.core.AvoidInternalCheck;
 import org.sonar.plugins.java.api.JavaCheck;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class RulesList {
@@ -18,19 +19,20 @@ public final class RulesList {
     }
 
     public static List<Class> getChecks() {
-        return ImmutableList.<Class>builder()
-                .addAll(getJavaChecks())
-                .addAll(getJavaTestChecks()).build();
+        ArrayList<Class> classes = new ArrayList<Class>();
+        classes.addAll(getJavaChecks());
+        classes.addAll(getJavaTestChecks());
+        return classes;
     }
 
     public static List<Class<? extends JavaCheck>> getJavaChecks() {
-        return ImmutableList.<Class<? extends JavaCheck>>builder()
-                .add(AvoidInternalRule.class)
-                .build();
+        ArrayList<Class<? extends JavaCheck>> classes = new ArrayList<Class<? extends JavaCheck>>();
+        classes.add(AvoidInternalCheck.class);
+        classes.add(AvoidGuiceCheck.class);
+        return classes;
     }
 
     public static List<Class<? extends JavaCheck>> getJavaTestChecks() {
-        return ImmutableList.<Class<? extends JavaCheck>>builder()
-                .build();
+        return new ArrayList<Class<? extends JavaCheck>>();
     }
 }

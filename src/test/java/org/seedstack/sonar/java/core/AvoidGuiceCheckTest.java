@@ -10,10 +10,10 @@ package org.seedstack.sonar.java.core;
 import org.junit.Test;
 import org.sonar.java.checks.verifier.JavaCheckVerifier;
 
-public class AvoidInternalCheckTest {
+public class AvoidGuiceCheckTest {
     @Test
     public void detected() {
-        AvoidInternalCheck check = new AvoidInternalCheck();
-        JavaCheckVerifier.verify("src/test/java/org/seedstack/sonar/java/fixtures/AvoidInternalCheck.java", check);
+        AvoidGuiceCheck check = new AvoidGuiceCheck();
+        JavaCheckVerifier.verify("src/test/java/org/seedstack/sonar/java/fixtures/AvoidGuiceCheck.java", check);
     }
 }

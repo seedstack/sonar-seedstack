@@ -8,7 +8,6 @@
 package org.seedstack.sonar;
 
 import org.seedstack.sonar.java.RulesList;
-import org.sonar.api.resources.Java;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.squidbridge.annotations.AnnotationBasedRulesDefinition;
 
@@ -18,13 +17,14 @@ import org.sonar.squidbridge.annotations.AnnotationBasedRulesDefinition;
  */
 public class SeedStackRulesDefinition implements RulesDefinition {
     public static final String REPOSITORY_KEY = "seedstack";
+    private static final String JAVA_KEY = "java";
 
     @Override
     public void define(Context context) {
-        NewRepository repository = context.createRepository(REPOSITORY_KEY, Java.KEY);
+        NewRepository repository = context.createRepository(REPOSITORY_KEY, JAVA_KEY);
         repository.setName("SeedStack");
 
-        AnnotationBasedRulesDefinition.load(repository, Java.KEY, RulesList.getChecks());
+        AnnotationBasedRulesDefinition.load(repository, JAVA_KEY, RulesList.getChecks());
         repository.done();
     }
 }
